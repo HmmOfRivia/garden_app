@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Garden (prod-debug)",
+        "type": "dart",
+        "flutterMode": "debug",
+        "request": "launch",
+        "program": "lib/main_prod.dart",
+        "args": [
+          "--flavor", "prod"
+      ]
+      },
+      {
+        "name": "Garden (prod-profile)",
+        "type": "dart",
+        "flutterMode": "profile",
+        "request": "launch",
+        "program": "lib/main_prod.dart",
+        "args": [
+          "--flavor", "prod"
+      ]
+      },
+      {
+        "name": "Garden (staging-debug)",
+        "type": "dart",
+        "flutterMode": "debug",
+        "request": "launch",
+        "program": "lib/main_staging.dart",
+        "args": [
+          "--flavor", "staging"
+      ]
+      },
+      {
+        "name": "Garden (staging-profile)",
+        "type": "dart",
+        "flutterMode": "profile",
+        "request": "launch",
+        "program": "lib/main_staging.dart",
+        "args": [
+          "--flavor", "staging"
+      ]
+      }
+    ]
+  }
+  

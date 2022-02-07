@@ -6,6 +6,7 @@ import 'package:garden_app/config/routes.gr.dart';
 import 'package:garden_app/generated/l10n.dart';
 import 'package:garden_app/logic/plants_page/plants_page_cubit.dart';
 import 'package:garden_app/presentation/plants_page/widgets/header_search_sliver.dart';
+import 'package:garden_app/presentation/plants_page/widgets/plant_list_tile.dart';
 import 'package:garden_app/presentation/plants_page/widgets/pulsing_floating_button.dart';
 
 class PlantsPage extends StatelessWidget {
@@ -38,12 +39,8 @@ class _PlantsPage extends StatelessWidget {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        //TODO: Implement plantListTile
-                        return Container(
-                          height: 100,
-                          color: Colors.accents[index],
-                          child: Text(s.plants[index].name),
-                        );
+                        // TODO: Implement plantListTile
+                        return PlantListTile(plant: s.plants[index]);
                       },
                       childCount: s.plants.length,
                     ),

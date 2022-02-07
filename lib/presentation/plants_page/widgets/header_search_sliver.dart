@@ -30,7 +30,7 @@ class HeaderSearchSliver extends SliverAppBar {
           flexibleSpace: FlexibleSpaceBar(
             title: Text(
               titleText,
-              style: const TextStyle(fontSize: 50),
+              style: AppStyles.whiteMedium(50),
             ),
             titlePadding: const EdgeInsets.only(
               bottom: 100.0,

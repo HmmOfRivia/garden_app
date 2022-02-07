@@ -21,6 +21,7 @@ dependencies:
   injectable: ^1.5.3
   flutter_hooks: ^0.18.2
   intl: ^0.17.0
+  lottie: ^1.2.1
 
   cupertino_icons: ^1.0.2
 
@@ -41,6 +42,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/animations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

@@ -1,4 +1,5 @@
 {
     "addPlant": "+ Add plant",
-    "appName": "Garden"
+    "appName": "Garden",
+    "noPlants": "No plants added"
 }

@@ -8,9 +8,12 @@ class PlantsRepository {
   final PlantDatabase _database;
   PlantsRepository(this._database);
 
-  Future<Either<Exception, List<Plant>>> getPlants(int after) async {
+  Future<Either<Exception, List<Plant>>> getPlants(
+    int after,
+    int quantity,
+  ) async {
     try {
-      final plants = await _database.plantDao.getPlantsAfterId(after);
+      final plants = await _database.plantDao.getPlantsAfterId(after, quantity);
       return right(plants);
     } catch (_) {
       return left(Exception());

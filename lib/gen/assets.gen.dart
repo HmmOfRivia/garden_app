@@ -7,6 +7,13 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsAnimationsGen {
+  const $AssetsAnimationsGen();
+
+  /// File path: assets/animations/tree_anim.json
+  String get treeAnim => 'assets/animations/tree_anim.json';
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -18,6 +25,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

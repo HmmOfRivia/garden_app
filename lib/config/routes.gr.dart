@@ -28,7 +28,7 @@ class AppRouter extends _i1.RootStackRouter {
     },
     PlantsRoute.name: (routeData) {
       return _i1.MaterialPageX<_i4.Widget>(
-          routeData: routeData, child: _i2.PlantsPage());
+          routeData: routeData, child: const _i2.PlantsPage());
     },
     PlantsFormRoute.name: (routeData) {
       return _i1.CustomPage<_i4.Widget>(

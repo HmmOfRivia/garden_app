@@ -69,6 +69,16 @@ class S {
       args: [],
     );
   }
+
+  /// `No plants added`
+  String get noPlants {
+    return Intl.message(
+      'No plants added',
+      name: 'noPlants',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

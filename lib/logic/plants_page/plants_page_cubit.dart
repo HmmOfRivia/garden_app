@@ -15,11 +15,37 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   }
 
   Future<void> loadPlantsFromDatabase(int after) async {
-    final plantsEither = await _repository.getPlants(after);
+    const _quantity = 10;
+    final plantsEither = await _repository.getPlants(after, _quantity);
 
-    plantsEither.fold(
-      (_) => emit(PlantsPageState.error()),
-      (plants) => emit(PlantsPageState.loaded(plants: plants)),
+    plantsEither.fold((_) => emit(PlantsPageState.error()), (plants) {
+      final reachedEnd = _quantity != plants.length;
+      state.maybeMap(
+        initial: (_) => emit(
+          PlantsPageState.loaded(
+            plants: plants,
+            reachedLastItem: reachedEnd,
+          ),
+        ),
+        loaded: (s) => emit(
+          PlantsPageState.loaded(
+            plants: [...s.plants, ...plants],
+            reachedLastItem: reachedEnd,
+          ),
+        ),
+        orElse: () => null,
+      );
+    });
+  }
+
+  void loadMorePlantsOnEdge(int index) {
+    state.maybeMap(
+      loaded: (s) {
+        if (index == s.plants.length - 2 && !s.reachedLastItem) {
+          loadPlantsFromDatabase(s.plants.length - 1);
+        }
+      },
+      orElse: () => null,
     );
   }
 
@@ -35,6 +61,7 @@ class PlantsPageState with _$PlantsPageState {
   factory PlantsPageState.initial() = _PlantsPageStateInitial;
   factory PlantsPageState.loaded({
     @Default(<Plant>[]) List<Plant> plants,
+    @Default(false) bool reachedLastItem,
   }) = _PlantsPageStateLoaded;
   factory PlantsPageState.error() = _PlantsPageStateError;
 }

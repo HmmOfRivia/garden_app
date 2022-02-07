@@ -118,14 +118,14 @@ class _$PlantDao extends PlantDao {
   final InsertionAdapter<Plant> _plantInsertionAdapter;
 
   @override
-  Future<List<Plant>> getPlantsAfterId(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM Plant WHERE id > ?1 LIMIT 10',
+  Future<List<Plant>> getPlantsAfterId(int id, int quantity) async {
+    return _queryAdapter.queryList('SELECT * FROM Plant WHERE id > ?1 LIMIT ?2',
         mapper: (Map<String, Object?> row) => Plant(
             id: row['id'] as int?,
             name: row['name'] as String,
             type: _plantTypeConverter.decode(row['type'] as String),
             plantDate: _dateTimeConverter.decode(row['plantDate'] as int)),
-        arguments: [id]);
+        arguments: [id, quantity]);
   }
 
   @override

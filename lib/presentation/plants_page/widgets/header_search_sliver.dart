@@ -4,6 +4,10 @@ import 'package:garden_app/gen/assets.gen.dart';
 
 class HeaderSearchSliver extends SliverAppBar {
   final String titleText;
+  static double maxHeight = 350.0;
+  static double minHeight = 80.0;
+  static double heightDifference = maxHeight - minHeight;
+
   HeaderSearchSliver({
     Key? key,
     required this.titleText,
@@ -11,10 +15,10 @@ class HeaderSearchSliver extends SliverAppBar {
           key: key,
           floating: true,
           pinned: true,
-          expandedHeight: 350,
+          expandedHeight: maxHeight,
           backgroundColor: AppColors.mainColor,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(80.0),
+            preferredSize: Size.fromHeight(minHeight),
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),

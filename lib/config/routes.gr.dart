@@ -31,9 +31,11 @@ class AppRouter extends _i1.RootStackRouter {
           routeData: routeData, child: const _i2.PlantsPage());
     },
     PlantsFormRoute.name: (routeData) {
+      final args = routeData.argsAs<PlantsFormRouteArgs>(
+          orElse: () => const PlantsFormRouteArgs());
       return _i1.CustomPage<_i4.Widget>(
           routeData: routeData,
-          child: const _i3.PlantsFormPage(),
+          child: _i3.PlantsFormPage(key: args.key),
           transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 500,
           opaque: true,
@@ -70,8 +72,21 @@ class PlantsRoute extends _i1.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.PlantsFormPage]
-class PlantsFormRoute extends _i1.PageRouteInfo<void> {
-  const PlantsFormRoute() : super(PlantsFormRoute.name, path: ':id');
+class PlantsFormRoute extends _i1.PageRouteInfo<PlantsFormRouteArgs> {
+  PlantsFormRoute({_i4.Key? key})
+      : super(PlantsFormRoute.name,
+            path: ':id', args: PlantsFormRouteArgs(key: key));
 
   static const String name = 'PlantsFormRoute';
+}
+
+class PlantsFormRouteArgs {
+  const PlantsFormRouteArgs({this.key});
+
+  final _i4.Key? key;
+
+  @override
+  String toString() {
+    return 'PlantsFormRouteArgs{key: $key}';
+  }
 }

@@ -28,7 +28,7 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
           ),
         ),
         loaded: (s) => emit(
-          PlantsPageState.loaded(
+          s.copyWith(
             plants: [...s.plants, ...plants],
             reachedLastItem: reachedEnd,
           ),

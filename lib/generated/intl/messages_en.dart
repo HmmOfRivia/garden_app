@@ -22,8 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addNewPlant": MessageLookupByLibrary.simpleMessage("Add new plant"),
         "addPlant": MessageLookupByLibrary.simpleMessage("+ Add plant"),
         "appName": MessageLookupByLibrary.simpleMessage("Garden"),
-        "noPlants": MessageLookupByLibrary.simpleMessage("No plants added")
+        "choosePlantType":
+            MessageLookupByLibrary.simpleMessage("Choose plant type"),
+        "clearForm": MessageLookupByLibrary.simpleMessage("Clear form"),
+        "nameOfPlantQuestion": MessageLookupByLibrary.simpleMessage(
+            "What is the name of a plant?"),
+        "noPlants": MessageLookupByLibrary.simpleMessage("No plants added"),
+        "plantDateQuestion":
+            MessageLookupByLibrary.simpleMessage("When the plant was planted?"),
+        "plantsSearchText":
+            MessageLookupByLibrary.simpleMessage("Seach for a plant")
       };
 }

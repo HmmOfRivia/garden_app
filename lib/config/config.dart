@@ -6,6 +6,13 @@ class AppColors {
   static const mainColor = Colors.green;
 }
 
+extension ColorBrightness on Color {
+  Color get dark {
+    final hsl = HSLColor.fromColor(this);
+    return hsl.withLightness(hsl.lightness - .2).toColor();
+  }
+}
+
 class AppStyles {
   static TextStyle whiteMedium(double size) => TextStyle(
         fontSize: size,

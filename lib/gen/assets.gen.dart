@@ -20,6 +20,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/banner_image.png
   AssetGenImage get bannerImage =>
       const AssetGenImage('assets/images/banner_image.png');
+
+  /// File path: assets/images/garden_background.jpeg
+  AssetGenImage get gardenBackground =>
+      const AssetGenImage('assets/images/garden_background.jpeg');
 }
 
 class Assets {

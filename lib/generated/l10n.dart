@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Add new plant`
+  String get addNewPlant {
+    return Intl.message(
+      'Add new plant',
+      name: 'addNewPlant',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Garden`
   String get appName {
     return Intl.message(
@@ -75,6 +85,56 @@ class S {
     return Intl.message(
       'No plants added',
       name: 'noPlants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seach for a plant`
+  String get plantsSearchText {
+    return Intl.message(
+      'Seach for a plant',
+      name: 'plantsSearchText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What is the name of a plant?`
+  String get nameOfPlantQuestion {
+    return Intl.message(
+      'What is the name of a plant?',
+      name: 'nameOfPlantQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When the plant was planted?`
+  String get plantDateQuestion {
+    return Intl.message(
+      'When the plant was planted?',
+      name: 'plantDateQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose plant type`
+  String get choosePlantType {
+    return Intl.message(
+      'Choose plant type',
+      name: 'choosePlantType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear form`
+  String get clearForm {
+    return Intl.message(
+      'Clear form',
+      name: 'clearForm',
       desc: '',
       args: [],
     );

@@ -1,5 +1,11 @@
 {
     "addPlant": "+ Add plant",
+    "addNewPlant": "Add new plant",
     "appName": "Garden",
-    "noPlants": "No plants added"
+    "noPlants": "No plants added",
+    "plantsSearchText": "Seach for a plant",
+    "nameOfPlantQuestion": "What is the name of a plant?",
+    "plantDateQuestion": "When the plant was planted?",
+    "choosePlantType": "Choose plant type",
+    "clearForm": "Clear form"
 }

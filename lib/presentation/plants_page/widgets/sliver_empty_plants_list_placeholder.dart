@@ -13,7 +13,7 @@ class SliverEmptyPlantsListPlaceholder extends StatelessWidget {
       child: Container(
         height: 240,
         width: 240,
-        margin: const EdgeInsets.only(top: 100),
+        margin: const EdgeInsets.symmetric(vertical: 100),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(

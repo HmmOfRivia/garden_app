@@ -19,11 +19,8 @@ class PlantsRepository {
       } else {
         plants = await _database.plantDao.getPlantsAfterId(after, quantity);
       }
-
-      print(plants.map((e) => e.id));
       return right(plants);
     } catch (_) {
-      print('ups');
       return left(Exception());
     }
   }
@@ -31,6 +28,14 @@ class PlantsRepository {
   Future<void> insertPlant(Plant plant) async {
     try {
       await _database.plantDao.insertPlant(plant);
+    } catch (_) {
+      throw Exception();
+    }
+  }
+
+  Future<void> updatePlant(Plant plant) async {
+    try {
+      await _database.plantDao.updatePlant(plant);
     } catch (_) {
       throw Exception();
     }

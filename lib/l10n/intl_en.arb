@@ -7,5 +7,7 @@
     "nameOfPlantQuestion": "What is the name of a plant?",
     "plantDateQuestion": "When the plant was planted?",
     "choosePlantType": "Choose plant type",
-    "clearForm": "Clear form"
+    "clearForm": "Clear form",
+    "editPlant": "Edit plant",
+    "savePlant": "Save plant"
 }

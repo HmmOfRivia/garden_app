@@ -28,12 +28,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "choosePlantType":
             MessageLookupByLibrary.simpleMessage("Choose plant type"),
         "clearForm": MessageLookupByLibrary.simpleMessage("Clear form"),
+        "editPlant": MessageLookupByLibrary.simpleMessage("Edit plant"),
         "nameOfPlantQuestion": MessageLookupByLibrary.simpleMessage(
             "What is the name of a plant?"),
         "noPlants": MessageLookupByLibrary.simpleMessage("No plants added"),
         "plantDateQuestion":
             MessageLookupByLibrary.simpleMessage("When the plant was planted?"),
         "plantsSearchText":
-            MessageLookupByLibrary.simpleMessage("Seach for a plant")
+            MessageLookupByLibrary.simpleMessage("Seach for a plant"),
+        "savePlant": MessageLookupByLibrary.simpleMessage("Save plant")
       };
 }

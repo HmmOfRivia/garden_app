@@ -16,9 +16,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PlantsFormPage extends StatelessWidget implements AutoRouteWrapper {
   final Plant? plant;
   final Map<String, dynamic> initialFormValues;
+  final bool isPlantEditing;
 
   PlantsFormPage({Key? key, this.plant})
-      : initialFormValues = plant == null ? <String, dynamic>{} : plant.toMap(),
+      : isPlantEditing = plant != null,
+        initialFormValues = plant == null ? <String, dynamic>{} : plant.toMap(),
         super(key: key);
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -37,7 +39,7 @@ class PlantsFormPage extends StatelessWidget implements AutoRouteWrapper {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          S.of(context).addNewPlant,
+          isPlantEditing ? S.of(context).editPlant : S.of(context).addNewPlant,
           style: AppStyles.whiteMedium(18),
         ),
         actions: [
@@ -120,16 +122,22 @@ class PlantsFormPage extends StatelessWidget implements AutoRouteWrapper {
                         CustomButton(
                           onTap: () async {
                             if (_formKey.currentState!.saveAndValidate()) {
-                              final plant =
-                                  Plant.fromMap(_formKey.currentState!.value);
+                              final plant = Plant.fromMap(<String, dynamic>{
+                                ...initialFormValues,
+                                ..._formKey.currentState!.value,
+                              });
+
                               await context
                                   .read<PlantsPageCubit>()
-                                  .addPlant(plant);
+                                  .updatePlant(plant);
+
                               await AutoRouter.of(context).pop();
                             }
                           },
                           color: AppColors.mainColor.dark,
-                          text: S.of(context).addNewPlant,
+                          text: isPlantEditing
+                              ? S.of(context).savePlant
+                              : S.of(context).addNewPlant,
                         ),
                         SizedBox(height: options.keyboardHeight),
                       ],

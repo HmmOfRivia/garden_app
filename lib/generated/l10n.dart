@@ -139,6 +139,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit plant`
+  String get editPlant {
+    return Intl.message(
+      'Edit plant',
+      name: 'editPlant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save plant`
+  String get savePlant {
+    return Intl.message(
+      'Save plant',
+      name: 'savePlant',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

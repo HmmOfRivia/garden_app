@@ -11,4 +11,7 @@ abstract class PlantDao {
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertPlant(Plant plant);
+
+  @update
+  Future<void> updatePlant(Plant plant);
 }

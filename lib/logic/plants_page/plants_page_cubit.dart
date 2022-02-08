@@ -61,6 +61,21 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
     );
   }
 
+  Future<void> updatePlant(Plant plant) async {
+    await _repository.updatePlant(plant);
+
+    state.maybeMap(
+      loaded: (s) {
+        final updatedPlants = s.plants.map((element) {
+          return element.id == plant.id ? plant : element;
+        }).toList();
+
+        emit(s.copyWith(plants: updatedPlants));
+      },
+      orElse: () => null,
+    );
+  }
+
   Future<void> removePlant(Plant plant) async {}
 }
 

@@ -66,7 +66,7 @@ class PlantListTile extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        DateFormat('dd-mm-yyyy').format(
+                        DateFormat('h:mm d-M-yyyy').format(
                           plant.plantDate,
                         ),
                       ),

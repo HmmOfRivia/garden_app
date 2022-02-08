@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:garden_app/config/config.dart';
 import 'package:garden_app/config/injection.dart';
 import 'package:garden_app/config/routes.gr.dart';
@@ -12,7 +13,10 @@ class GardenApp extends StatelessWidget {
     final appRouter = getIt<AppRouter>();
     return MaterialApp.router(
       theme: AppThemeData.lightAppTheme,
-      localizationsDelegates: const [S.delegate],
+      localizationsDelegates: const [
+        S.delegate,
+        FormBuilderLocalizations.delegate,
+      ],
       routeInformationParser: appRouter.defaultRouteParser(),
       routerDelegate: appRouter.delegate(),
     );

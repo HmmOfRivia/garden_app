@@ -13,6 +13,7 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i4;
 
+import '../data/entity/plant.dart' as _i5;
 import '../presentation/plants_form_page/plants_form_page.dart' as _i3;
 import '../presentation/plants_page/plants_page.dart' as _i2;
 
@@ -35,7 +36,7 @@ class AppRouter extends _i1.RootStackRouter {
           orElse: () => const PlantsFormRouteArgs());
       return _i1.CustomPage<_i4.Widget>(
           routeData: routeData,
-          child: _i3.PlantsFormPage(key: args.key),
+          child: _i3.PlantsFormPage(key: args.key, plant: args.plant),
           transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 500,
           opaque: true,
@@ -73,20 +74,22 @@ class PlantsRoute extends _i1.PageRouteInfo<void> {
 /// generated route for
 /// [_i3.PlantsFormPage]
 class PlantsFormRoute extends _i1.PageRouteInfo<PlantsFormRouteArgs> {
-  PlantsFormRoute({_i4.Key? key})
+  PlantsFormRoute({_i4.Key? key, _i5.Plant? plant})
       : super(PlantsFormRoute.name,
-            path: ':id', args: PlantsFormRouteArgs(key: key));
+            path: ':id', args: PlantsFormRouteArgs(key: key, plant: plant));
 
   static const String name = 'PlantsFormRoute';
 }
 
 class PlantsFormRouteArgs {
-  const PlantsFormRouteArgs({this.key});
+  const PlantsFormRouteArgs({this.key, this.plant});
 
   final _i4.Key? key;
 
+  final _i5.Plant? plant;
+
   @override
   String toString() {
-    return 'PlantsFormRouteArgs{key: $key}';
+    return 'PlantsFormRouteArgs{key: $key, plant: $plant}';
   }
 }

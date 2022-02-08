@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:floor/floor.dart';
 
 enum PlantType {
@@ -43,4 +45,24 @@ class Plant {
       plantDate: plantDate ?? this.plantDate,
     );
   }
+
+  factory Plant.fromMap(Map<String, dynamic> map) {
+    return Plant(
+      id: map['id']?.toInt(),
+      name: map['name'] ?? '',
+      type: map['type'],
+      plantDate: map['plantDate'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'plantDate': plantDate,
+      'type': type,
+    };
+  }
+
+  factory Plant.fromJson(String source) => Plant.fromMap(json.decode(source));
 }

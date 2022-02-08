@@ -119,7 +119,8 @@ class _$PlantDao extends PlantDao {
 
   @override
   Future<List<Plant>> getPlantsAfterId(int id, int quantity) async {
-    return _queryAdapter.queryList('SELECT * FROM Plant WHERE id > ?1 LIMIT ?2',
+    return _queryAdapter.queryList(
+        'SELECT * FROM Plant WHERE id < ?1 ORDER BY id DESC LIMIT ?2',
         mapper: (Map<String, Object?> row) => Plant(
             id: row['id'] as int?,
             name: row['name'] as String,
@@ -129,8 +130,20 @@ class _$PlantDao extends PlantDao {
   }
 
   @override
+  Future<List<Plant>> getFirstPlants(int quantity) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM Plant ORDER BY id DESC LIMIT ?1',
+        mapper: (Map<String, Object?> row) => Plant(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            type: _plantTypeConverter.decode(row['type'] as String),
+            plantDate: _dateTimeConverter.decode(row['plantDate'] as int)),
+        arguments: [quantity]);
+  }
+
+  @override
   Future<void> insertPlant(Plant plant) async {
-    await _plantInsertionAdapter.insert(plant, OnConflictStrategy.ignore);
+    await _plantInsertionAdapter.insert(plant, OnConflictStrategy.replace);
   }
 }
 

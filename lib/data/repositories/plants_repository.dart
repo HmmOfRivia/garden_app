@@ -9,13 +9,21 @@ class PlantsRepository {
   PlantsRepository(this._database);
 
   Future<Either<Exception, List<Plant>>> getPlants(
-    int after,
+    int? after,
     int quantity,
   ) async {
     try {
-      final plants = await _database.plantDao.getPlantsAfterId(after, quantity);
+      late List<Plant> plants;
+      if (after == null) {
+        plants = await _database.plantDao.getFirstPlants(quantity);
+      } else {
+        plants = await _database.plantDao.getPlantsAfterId(after, quantity);
+      }
+
+      print(plants.map((e) => e.id));
       return right(plants);
     } catch (_) {
+      print('ups');
       return left(Exception());
     }
   }

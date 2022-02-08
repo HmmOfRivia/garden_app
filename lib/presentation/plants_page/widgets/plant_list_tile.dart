@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:garden_app/config/config.dart';
+import 'package:garden_app/config/routes.gr.dart';
 
 import 'package:garden_app/data/entity/plant.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +19,9 @@ class PlantListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //TODO: Navigate to plant editing
-      onTap: () {},
+      onTap: () => AutoRouter.of(context).push(
+        PlantsFormRoute(plant: plant),
+      ),
       child: Container(
         height: _plantTileSize,
         margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
@@ -62,9 +65,9 @@ class PlantListTile extends StatelessWidget {
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Text(
-                        DateFormat('dd-mm-yyyy').format(plant.plantDate),
-                      ),
+                      child: Text(DateFormat('dd-mm-yyyy').format(
+                        plant.plantDate,
+                      )),
                     )
                   ],
                 ),

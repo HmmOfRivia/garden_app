@@ -68,12 +68,14 @@ class CustomInputField extends StatelessWidget {
     Key? key,
     required String name,
     String? hintText,
+    FormFieldValidator<dynamic>? validator,
     required List<DropdownMenuItem<dynamic>> items,
   })  : _field = FormBuilderDropdown<dynamic>(
           name: name,
           items: items,
           decoration: _decoration.copyWith(hintText: hintText),
           style: AppStyles.whiteMedium(15),
+          validator: validator,
           dropdownColor: AppColors.mainColor,
         ),
         super(key: key);
@@ -81,16 +83,19 @@ class CustomInputField extends StatelessWidget {
   CustomInputField.timePicker({
     Key? key,
     required String name,
-    required TimeOfDay initialTime,
+    TimeOfDay? initialTime,
+    DateTime? initialDate,
+    FormFieldValidator<dynamic>? validator,
     String? hintText,
   })  : _field = FormBuilderDateTimePicker(
           name: name,
           inputType: InputType.both,
           format: DateFormat('h:mm yyy-MM-dd'),
-          initialTime: initialTime,
-          initialDate: DateTime.now(),
+          initialTime: initialTime ?? TimeOfDay.now(),
+          initialDate: initialDate ?? DateTime.now(),
           decoration: _decoration.copyWith(hintText: hintText),
-          style: AppStyles.whiteMedium(16),
+          style: AppStyles.whiteMedium(15),
+          validator: validator,
         ),
         super(key: key);
 

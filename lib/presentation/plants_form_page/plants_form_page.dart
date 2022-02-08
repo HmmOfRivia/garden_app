@@ -1,17 +1,35 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:garden_app/config/config.dart';
+import 'package:garden_app/config/injection.dart';
 import 'package:garden_app/data/entity/plant.dart';
+import 'package:garden_app/logic/plants_page/plants_page_cubit.dart';
 import 'package:garden_app/presentation/widgets/custom_button.dart';
 import 'package:garden_app/presentation/widgets/custom_input_field.dart';
 import 'package:garden_app/generated/l10n.dart';
 import 'package:garden_app/gen/assets.gen.dart';
 import 'package:keyboard_utils/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PlantsFormPage extends StatelessWidget {
-  PlantsFormPage({Key? key}) : super(key: key);
+class PlantsFormPage extends StatelessWidget implements AutoRouteWrapper {
+  final Plant? plant;
+  final Map<String, dynamic> initialFormValues;
+
+  PlantsFormPage({Key? key, this.plant})
+      : initialFormValues = plant == null ? <String, dynamic>{} : plant.toMap(),
+        super(key: key);
 
   final _formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider.value(
+      value: getIt<PlantsPageCubit>(),
+      child: this,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +42,9 @@ class PlantsFormPage extends StatelessWidget {
         ),
         actions: [
           GestureDetector(
-            onTap: () => _formKey.currentState!.reset(),
+            onTap: () => _formKey.currentState!
+              ..save()
+              ..reset(),
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 8.0, 20.0, 8.0),
               padding: const EdgeInsets.all(8),
@@ -43,6 +63,7 @@ class PlantsFormPage extends StatelessWidget {
       ),
       body: FormBuilder(
         key: _formKey,
+        initialValue: initialFormValues,
         child: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
@@ -59,7 +80,7 @@ class PlantsFormPage extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.black45,
+                      color: Colors.black87,
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                     child: Column(
@@ -69,18 +90,20 @@ class PlantsFormPage extends StatelessWidget {
                           name: 'name',
                           maxLength: 30,
                           maxLines: 1,
+                          validator: FormBuilderValidators.required(context),
                           hintText: S.of(context).nameOfPlantQuestion,
                         ),
                         const SizedBox(height: 12),
                         CustomInputField.timePicker(
                           name: 'plantDate',
-                          initialTime: TimeOfDay.now(),
+                          validator: FormBuilderValidators.required(context),
                           hintText: S.of(context).plantDateQuestion,
                         ),
                         const SizedBox(height: 12),
                         CustomInputField.dropdown(
                           name: 'type',
                           hintText: S.of(context).choosePlantType,
+                          validator: FormBuilderValidators.required(context),
                           items: PlantType.values
                               .map(
                                 (plantType) => DropdownMenuItem<PlantType>(
@@ -95,8 +118,16 @@ class PlantsFormPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         CustomButton(
-                          //TODO: trigger cubit method addPlant
-                          onTap: () {},
+                          onTap: () async {
+                            if (_formKey.currentState!.saveAndValidate()) {
+                              final plant =
+                                  Plant.fromMap(_formKey.currentState!.value);
+                              await context
+                                  .read<PlantsPageCubit>()
+                                  .addPlant(plant);
+                              await AutoRouter.of(context).pop();
+                            }
+                          },
                           color: AppColors.mainColor.dark,
                           text: S.of(context).addNewPlant,
                         ),

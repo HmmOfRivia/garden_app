@@ -11,47 +11,55 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   final PlantsRepository _repository;
 
   PlantsPageCubit(this._repository) : super(PlantsPageState.initial()) {
-    loadPlantsFromDatabase(0);
+    loadPlantsFromDatabase();
   }
 
-  Future<void> loadPlantsFromDatabase(int after) async {
+  Future<void> loadPlantsFromDatabase({int? after}) async {
     const _quantity = 10;
     final plantsEither = await _repository.getPlants(after, _quantity);
 
-    plantsEither.fold((_) => emit(PlantsPageState.error()), (plants) {
-      final reachedEnd = _quantity != plants.length;
-      state.maybeMap(
-        initial: (_) => emit(
-          PlantsPageState.loaded(
-            plants: plants,
-            reachedLastItem: reachedEnd,
+    plantsEither.fold(
+      (_) => emit(PlantsPageState.error()),
+      (plants) {
+        final reachedEnd = _quantity != plants.length;
+        state.maybeMap(
+          initial: (_) => emit(
+            PlantsPageState.loaded(
+              plants: plants,
+              reachedLastItem: reachedEnd,
+            ),
           ),
-        ),
-        loaded: (s) => emit(
-          s.copyWith(
-            plants: [...s.plants, ...plants],
-            reachedLastItem: reachedEnd,
+          loaded: (s) => emit(
+            s.copyWith(
+              plants: [...s.plants, ...plants],
+              reachedLastItem: reachedEnd,
+            ),
           ),
-        ),
-        orElse: () => null,
-      );
-    });
+          orElse: () => null,
+        );
+      },
+    );
   }
 
   void loadMorePlantsOnEdge(int index) {
     state.maybeMap(
       loaded: (s) {
         if (index == s.plants.length - 2 && !s.reachedLastItem) {
-          loadPlantsFromDatabase(s.plants.length - 1);
+          loadPlantsFromDatabase(after: s.plants.last.id!);
         }
       },
       orElse: () => null,
     );
   }
 
-  //TODO: Implement
+  Future<void> addPlant(Plant plant) async {
+    await _repository.insertPlant(plant);
 
-  Future<void> addPlant(Plant plant) async {}
+    state.maybeMap(
+      loaded: (s) => emit(s.copyWith(plants: [plant, ...s.plants])),
+      orElse: () => null,
+    );
+  }
 
   Future<void> removePlant(Plant plant) async {}
 }

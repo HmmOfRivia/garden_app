@@ -127,9 +127,13 @@ class PlantsFormPage extends StatelessWidget implements AutoRouteWrapper {
                                 ..._formKey.currentState!.value,
                               });
 
-                              await context
-                                  .read<PlantsPageCubit>()
-                                  .updatePlant(plant);
+                              isPlantEditing
+                                  ? await context
+                                      .read<PlantsPageCubit>()
+                                      .updatePlant(plant)
+                                  : await context
+                                      .read<PlantsPageCubit>()
+                                      .addPlant(plant);
 
                               await AutoRouter.of(context).pop();
                             }

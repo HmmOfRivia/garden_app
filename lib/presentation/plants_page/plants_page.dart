@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:garden_app/config/config.dart';
 import 'package:garden_app/config/injection.dart';
 import 'package:garden_app/config/routes.gr.dart';
 import 'package:garden_app/generated/l10n.dart';
@@ -50,7 +51,30 @@ class _PlantsPage extends HookWidget {
               );
             },
           ),
-          BlocBuilder<PlantsPageCubit, PlantsPageState>(
+          BlocConsumer<PlantsPageCubit, PlantsPageState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                loaded: (_, __, action) {
+                  if (action == PlantsListAction.inserted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(S.of(context).insertedSuccessfully),
+                        backgroundColor: AppColors.successColor,
+                      ),
+                    );
+                  }
+                  if (action == PlantsListAction.updated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(S.of(context).updatedSuccessfully),
+                        backgroundColor: AppColors.successColor,
+                      ),
+                    );
+                  }
+                },
+                orElse: () => null,
+              );
+            },
             builder: (context, state) {
               return state.maybeMap(
                 loaded: (s) {

@@ -23,10 +23,13 @@ class _$PlantsPageStateTearOff {
   }
 
   _PlantsPageStateLoaded loaded(
-      {List<Plant> plants = const <Plant>[], bool reachedLastItem = false}) {
+      {List<Plant> plants = const <Plant>[],
+      bool reachedLastItem = false,
+      PlantsListAction? action}) {
     return _PlantsPageStateLoaded(
       plants: plants,
       reachedLastItem: reachedLastItem,
+      action: action,
     );
   }
 
@@ -43,21 +46,27 @@ mixin _$PlantsPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Plant> plants, bool reachedLastItem) loaded,
+    required TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+        loaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -145,7 +154,9 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Plant> plants, bool reachedLastItem) loaded,
+    required TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+        loaded,
     required TResult Function() error,
   }) {
     return initial();
@@ -155,7 +166,9 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
   }) {
     return initial?.call();
@@ -165,7 +178,9 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -219,7 +234,8 @@ abstract class _$PlantsPageStateLoadedCopyWith<$Res> {
   factory _$PlantsPageStateLoadedCopyWith(_PlantsPageStateLoaded value,
           $Res Function(_PlantsPageStateLoaded) then) =
       __$PlantsPageStateLoadedCopyWithImpl<$Res>;
-  $Res call({List<Plant> plants, bool reachedLastItem});
+  $Res call(
+      {List<Plant> plants, bool reachedLastItem, PlantsListAction? action});
 }
 
 /// @nodoc
@@ -237,6 +253,7 @@ class __$PlantsPageStateLoadedCopyWithImpl<$Res>
   $Res call({
     Object? plants = freezed,
     Object? reachedLastItem = freezed,
+    Object? action = freezed,
   }) {
     return _then(_PlantsPageStateLoaded(
       plants: plants == freezed
@@ -247,6 +264,10 @@ class __$PlantsPageStateLoadedCopyWithImpl<$Res>
           ? _value.reachedLastItem
           : reachedLastItem // ignore: cast_nullable_to_non_nullable
               as bool,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PlantsListAction?,
     ));
   }
 }
@@ -255,7 +276,9 @@ class __$PlantsPageStateLoadedCopyWithImpl<$Res>
 
 class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   _$_PlantsPageStateLoaded(
-      {this.plants = const <Plant>[], this.reachedLastItem = false});
+      {this.plants = const <Plant>[],
+      this.reachedLastItem = false,
+      this.action});
 
   @JsonKey()
   @override
@@ -263,10 +286,12 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   @JsonKey()
   @override
   final bool reachedLastItem;
+  @override
+  final PlantsListAction? action;
 
   @override
   String toString() {
-    return 'PlantsPageState.loaded(plants: $plants, reachedLastItem: $reachedLastItem)';
+    return 'PlantsPageState.loaded(plants: $plants, reachedLastItem: $reachedLastItem, action: $action)';
   }
 
   @override
@@ -276,14 +301,16 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
             other is _PlantsPageStateLoaded &&
             const DeepCollectionEquality().equals(other.plants, plants) &&
             const DeepCollectionEquality()
-                .equals(other.reachedLastItem, reachedLastItem));
+                .equals(other.reachedLastItem, reachedLastItem) &&
+            const DeepCollectionEquality().equals(other.action, action));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(plants),
-      const DeepCollectionEquality().hash(reachedLastItem));
+      const DeepCollectionEquality().hash(reachedLastItem),
+      const DeepCollectionEquality().hash(action));
 
   @JsonKey(ignore: true)
   @override
@@ -295,32 +322,38 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Plant> plants, bool reachedLastItem) loaded,
+    required TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+        loaded,
     required TResult Function() error,
   }) {
-    return loaded(plants, reachedLastItem);
+    return loaded(plants, reachedLastItem, action);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
   }) {
-    return loaded?.call(plants, reachedLastItem);
+    return loaded?.call(plants, reachedLastItem, action);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(plants, reachedLastItem);
+      return loaded(plants, reachedLastItem, action);
     }
     return orElse();
   }
@@ -361,11 +394,14 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
 }
 
 abstract class _PlantsPageStateLoaded implements PlantsPageState {
-  factory _PlantsPageStateLoaded({List<Plant> plants, bool reachedLastItem}) =
-      _$_PlantsPageStateLoaded;
+  factory _PlantsPageStateLoaded(
+      {List<Plant> plants,
+      bool reachedLastItem,
+      PlantsListAction? action}) = _$_PlantsPageStateLoaded;
 
   List<Plant> get plants;
   bool get reachedLastItem;
+  PlantsListAction? get action;
   @JsonKey(ignore: true)
   _$PlantsPageStateLoadedCopyWith<_PlantsPageStateLoaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -413,7 +449,9 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Plant> plants, bool reachedLastItem) loaded,
+    required TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+        loaded,
     required TResult Function() error,
   }) {
     return error();
@@ -423,7 +461,9 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
   }) {
     return error?.call();
@@ -433,7 +473,9 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Plant> plants, bool reachedLastItem)? loaded,
+    TResult Function(
+            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+        loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

@@ -4,6 +4,8 @@ enum AppEnviroments { prod, staging }
 
 class AppColors {
   static const mainColor = Colors.green;
+  static const successColor = Colors.lightGreen;
+  static const failureColor = Colors.red;
 }
 
 extension ColorBrightness on Color {

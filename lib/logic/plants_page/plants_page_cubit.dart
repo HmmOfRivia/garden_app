@@ -33,6 +33,7 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
             s.copyWith(
               plants: [...s.plants, ...plants],
               reachedLastItem: reachedEnd,
+              action: null,
             ),
           ),
           orElse: () => null,
@@ -56,7 +57,12 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
     await _repository.insertPlant(plant);
 
     state.maybeMap(
-      loaded: (s) => emit(s.copyWith(plants: [plant, ...s.plants])),
+      loaded: (s) => emit(
+        s.copyWith(
+          plants: [plant, ...s.plants],
+          action: PlantsListAction.inserted,
+        ),
+      ),
       orElse: () => null,
     );
   }
@@ -70,7 +76,12 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
           return element.id == plant.id ? plant : element;
         }).toList();
 
-        emit(s.copyWith(plants: updatedPlants));
+        emit(
+          s.copyWith(
+            plants: updatedPlants,
+            action: PlantsListAction.updated,
+          ),
+        );
       },
       orElse: () => null,
     );
@@ -79,12 +90,15 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   Future<void> removePlant(Plant plant) async {}
 }
 
+enum PlantsListAction { updated, inserted }
+
 @freezed
 class PlantsPageState with _$PlantsPageState {
   factory PlantsPageState.initial() = _PlantsPageStateInitial;
   factory PlantsPageState.loaded({
     @Default(<Plant>[]) List<Plant> plants,
     @Default(false) bool reachedLastItem,
+    PlantsListAction? action,
   }) = _PlantsPageStateLoaded;
   factory PlantsPageState.error() = _PlantsPageStateError;
 }

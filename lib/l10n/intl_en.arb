@@ -9,5 +9,7 @@
     "choosePlantType": "Choose plant type",
     "clearForm": "Clear form",
     "editPlant": "Edit plant",
-    "savePlant": "Save plant"
+    "savePlant": "Save plant",
+    "insertedSuccessfully" : "Inserted successfully",
+    "updatedSuccessfully" : "Updated successfully"
 }

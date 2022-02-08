@@ -159,6 +159,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Inserted successfully`
+  String get insertedSuccessfully {
+    return Intl.message(
+      'Inserted successfully',
+      name: 'insertedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updated successfully`
+  String get updatedSuccessfully {
+    return Intl.message(
+      'Updated successfully',
+      name: 'updatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -16,32 +16,31 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   }
 
   Future<void> loadPlantsFromDatabase({int? after}) async {
-    const _quantity = 10;
+    const quantity = 10;
     final plantsEither = await _repository.getPlants(
       after: after,
-      quantity: _quantity,
+      quantity: quantity,
     );
 
     plantsEither.fold(
       (_) => emit(PlantsPageState.error()),
       (plants) {
-        final reachedEnd = _quantity != plants.length;
+        final reachedLastItem = quantity != plants.length;
         state.maybeMap(
-          initial: (_) => emit(
-            PlantsPageState.loaded(
-              plants: plants,
-              reachedLastItem: reachedEnd,
-            ),
-          ),
           loaded: (s) => emit(
             s.copyWith(
               plants: after == null ? plants : [...s.plants, ...plants],
               searchPhrase: '',
-              reachedLastItem: reachedEnd,
+              reachedLastItem: reachedLastItem,
               action: null,
             ),
           ),
-          orElse: () => null,
+          orElse: () => emit(
+            PlantsPageState.loaded(
+              plants: plants,
+              reachedLastItem: reachedLastItem,
+            ),
+          ),
         );
       },
     );
@@ -114,11 +113,20 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
         ),
       );
     } else {
-      final plantsEither = await _repository.getPlants();
+      const quantity = 10;
+      final plantsEither = await _repository.getPlants(quantity: quantity);
 
       plantsEither.fold(
-        (_) => null,
-        (plants) => emit(PlantsPageState.loaded(plants: plants)),
+        (_) => emit(PlantsPageState.error()),
+        (plants) {
+          final reachedLastItem = quantity != plants.length;
+          emit(
+            PlantsPageState.loaded(
+              plants: plants,
+              reachedLastItem: reachedLastItem,
+            ),
+          );
+        },
       );
     }
   }

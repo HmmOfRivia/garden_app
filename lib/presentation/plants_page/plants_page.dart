@@ -19,7 +19,7 @@ class PlantsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<PlantsPageCubit>(),
+      create: (_) => getIt<PlantsPageCubit>()..loadPlantsFromDatabase(),
       child: const _PlantsPage(),
     );
   }

@@ -65,4 +65,20 @@ class Plant {
   }
 
   factory Plant.fromJson(String source) => Plant.fromMap(json.decode(source));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Plant &&
+        other.id == id &&
+        other.name == name &&
+        other.type == type &&
+        other.plantDate == plantDate;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^ name.hashCode ^ type.hashCode ^ plantDate.hashCode;
+  }
 }

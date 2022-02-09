@@ -11,19 +11,16 @@ part 'plants_page_cubit.freezed.dart';
 class PlantsPageCubit extends Cubit<PlantsPageState> {
   final PlantsRepository _repository;
 
-  PlantsPageCubit(this._repository) : super(PlantsPageState.initial()) {
-    loadPlantsFromDatabase();
-  }
+  PlantsPageCubit(this._repository) : super(const PlantsPageState.initial());
 
-  Future<void> loadPlantsFromDatabase({int? after}) async {
-    const quantity = 10;
+  Future<void> loadPlantsFromDatabase({int? after, int quantity = 10}) async {
     final plantsEither = await _repository.getPlants(
       after: after,
       quantity: quantity,
     );
 
     plantsEither.fold(
-      (_) => emit(PlantsPageState.error()),
+      (_) => emit(const PlantsPageState.error()),
       (plants) {
         final reachedLastItem = quantity != plants.length;
         state.maybeMap(
@@ -60,13 +57,15 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   }
 
   Future<void> addPlant(Plant plant) async {
-    await _repository.insertPlant(plant);
+    if (!await _repository.insertPlant(plant)) {
+      emit(const PlantsPageState.error());
+    }
 
     state.maybeMap(
       loaded: (s) => emit(
         s.copyWith(
           plants: [plant, ...s.plants],
-          action: _PlantActionArguments(
+          action: PlantActionArguments(
             action: PlantsListAction.inserted,
             name: plant.name,
           ),
@@ -77,7 +76,9 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   }
 
   Future<void> updatePlant(Plant plant) async {
-    await _repository.updatePlant(plant);
+    if (!await _repository.updatePlant(plant)) {
+      emit(const PlantsPageState.error());
+    }
 
     state.maybeMap(
       loaded: (s) {
@@ -88,7 +89,7 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
         emit(
           s.copyWith(
             plants: updatedPlants,
-            action: _PlantActionArguments(
+            action: PlantActionArguments(
               action: PlantsListAction.updated,
               name: plant.name,
             ),
@@ -117,7 +118,7 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
       final plantsEither = await _repository.getPlants(quantity: quantity);
 
       plantsEither.fold(
-        (_) => emit(PlantsPageState.error()),
+        (_) => emit(const PlantsPageState.error()),
         (plants) {
           final reachedLastItem = quantity != plants.length;
           emit(
@@ -134,24 +135,36 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
 
 enum PlantsListAction { updated, inserted }
 
-class _PlantActionArguments {
+class PlantActionArguments {
   final PlantsListAction action;
   final String name;
 
-  _PlantActionArguments({
+  PlantActionArguments({
     required this.action,
     required this.name,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is PlantActionArguments &&
+        other.action == action &&
+        other.name == name;
+  }
+
+  @override
+  int get hashCode => action.hashCode ^ name.hashCode;
 }
 
 @freezed
-class PlantsPageState with _$PlantsPageState {
-  factory PlantsPageState.initial() = _PlantsPageStateInitial;
-  factory PlantsPageState.loaded({
+abstract class PlantsPageState with _$PlantsPageState {
+  const factory PlantsPageState.initial() = _PlantsPageStateInitial;
+  const factory PlantsPageState.loaded({
     @Default(<Plant>[]) List<Plant> plants,
     @Default(false) bool reachedLastItem,
-    _PlantActionArguments? action,
+    PlantActionArguments? action,
     @Default('') String searchPhrase,
   }) = _PlantsPageStateLoaded;
-  factory PlantsPageState.error() = _PlantsPageStateError;
+  const factory PlantsPageState.error() = _PlantsPageStateError;
 }

@@ -15,6 +15,7 @@ analyzer:
     - "**/injection.config.dart"
     - "lib/generated/**"
     - "lib/generated_plugin_registrant.dart"
+    - "test/plant_cubit_test.dart"
 
 linter:
   rules:

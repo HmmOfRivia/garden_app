@@ -25,19 +25,21 @@ class PlantsRepository {
     }
   }
 
-  Future<void> insertPlant(Plant plant) async {
+  Future<bool> insertPlant(Plant plant) async {
     try {
       await _database.plantDao.insertPlant(plant);
+      return true;
     } catch (_) {
-      throw Exception();
+      return false;
     }
   }
 
-  Future<void> updatePlant(Plant plant) async {
+  Future<bool> updatePlant(Plant plant) async {
     try {
       await _database.plantDao.updatePlant(plant);
+      return true;
     } catch (_) {
-      throw Exception();
+      return false;
     }
   }
 

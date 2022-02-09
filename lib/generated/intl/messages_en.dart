@@ -20,6 +20,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(plant) => "Successfully inserted ${plant}";
+
+  static String m1(plant) => "Successfully updated ${plant}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addNewPlant": MessageLookupByLibrary.simpleMessage("Add new plant"),
@@ -29,17 +33,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose plant type"),
         "clearForm": MessageLookupByLibrary.simpleMessage("Clear form"),
         "editPlant": MessageLookupByLibrary.simpleMessage("Edit plant"),
-        "insertedSuccessfully":
-            MessageLookupByLibrary.simpleMessage("Inserted successfully"),
+        "insertedSuccessfully": m0,
         "nameOfPlantQuestion": MessageLookupByLibrary.simpleMessage(
             "What is the name of a plant?"),
         "noPlants": MessageLookupByLibrary.simpleMessage("No plants added"),
+        "noSearchResult":
+            MessageLookupByLibrary.simpleMessage("Plants not found"),
         "plantDateQuestion":
             MessageLookupByLibrary.simpleMessage("When the plant was planted?"),
         "plantsSearchText":
             MessageLookupByLibrary.simpleMessage("Seach for a plant"),
         "savePlant": MessageLookupByLibrary.simpleMessage("Save plant"),
-        "updatedSuccessfully":
-            MessageLookupByLibrary.simpleMessage("Updated successfully")
+        "search": MessageLookupByLibrary.simpleMessage("Search for plants"),
+        "updatedSuccessfully": m1
       };
 }

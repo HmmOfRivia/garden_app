@@ -10,6 +10,8 @@
     "clearForm": "Clear form",
     "editPlant": "Edit plant",
     "savePlant": "Save plant",
-    "insertedSuccessfully" : "Inserted successfully",
-    "updatedSuccessfully" : "Updated successfully"
+    "insertedSuccessfully" : "Successfully inserted {plant}",
+    "updatedSuccessfully" : "Successfully updated {plant}",
+    "noSearchResult": "Plants not found",
+    "search": "Search for plants"
 }

@@ -160,21 +160,41 @@ class S {
     );
   }
 
-  /// `Inserted successfully`
-  String get insertedSuccessfully {
+  /// `Successfully inserted {plant}`
+  String insertedSuccessfully(Object plant) {
     return Intl.message(
-      'Inserted successfully',
+      'Successfully inserted $plant',
       name: 'insertedSuccessfully',
+      desc: '',
+      args: [plant],
+    );
+  }
+
+  /// `Successfully updated {plant}`
+  String updatedSuccessfully(Object plant) {
+    return Intl.message(
+      'Successfully updated $plant',
+      name: 'updatedSuccessfully',
+      desc: '',
+      args: [plant],
+    );
+  }
+
+  /// `Plants not found`
+  String get noSearchResult {
+    return Intl.message(
+      'Plants not found',
+      name: 'noSearchResult',
       desc: '',
       args: [],
     );
   }
 
-  /// `Updated successfully`
-  String get updatedSuccessfully {
+  /// `Search for plants`
+  String get search {
     return Intl.message(
-      'Updated successfully',
-      name: 'updatedSuccessfully',
+      'Search for plants',
+      name: 'search',
       desc: '',
       args: [],
     );

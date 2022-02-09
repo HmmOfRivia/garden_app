@@ -14,8 +14,8 @@ void configureInjection(String environment) {
 @module
 abstract class RegisterModule {
   @singleton
-  Future<PlantDatabase> get database async =>
-      await $FloorPlantDatabase.databaseBuilder('plant_database.db').build();
+  Future<PlantDatabase> get database =>
+      $FloorPlantDatabase.databaseBuilder('plant_database.db').build();
 
   @singleton
   AppRouter get appRouter => AppRouter();

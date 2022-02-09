@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:garden_app/config/config.dart';
 import 'package:garden_app/generated/l10n.dart';
-import 'package:garden_app/presentation/plants_page/widgets/header_search_sliver.dart';
-import 'package:lottie/lottie.dart';
 import 'package:garden_app/gen/assets.gen.dart';
+import 'package:garden_app/presentation/plants_page/widgets/header_search_sliver.dart';
 
-class SliverEmptyPlantsListPlaceholder extends StatelessWidget {
+class SliverEmptySearchPlaceholder extends StatelessWidget {
   final double keyboardHeight;
-  const SliverEmptyPlantsListPlaceholder({
+  const SliverEmptySearchPlaceholder({
     Key? key,
     required this.keyboardHeight,
   }) : super(key: key);
@@ -16,7 +15,6 @@ class SliverEmptyPlantsListPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final placeholderHeight = MediaQuery.of(context).size.height -
         (HeaderSearchSliver.maxHeight + 80);
-
     return SliverToBoxAdapter(
       child: SizedBox(
         height: placeholderHeight,
@@ -38,15 +36,11 @@ class SliverEmptyPlantsListPlaceholder extends StatelessWidget {
                     ),
                   ),
                 ),
-                LottieBuilder.asset(
-                  Assets.animations.treeAnim,
-                  height: 130,
-                  repeat: false,
-                ),
+                Assets.images.plantImage.image(height: 80),
                 Align(
                   alignment: const FractionalOffset(0.5, 0.8),
                   child: Text(
-                    S.of(context).noPlants,
+                    S.of(context).noSearchResult,
                     style: AppStyles.blackMedium(16),
                   ),
                 )

@@ -154,6 +154,17 @@ class _$PlantDao extends PlantDao {
   }
 
   @override
+  Future<List<Plant>> getPlantsByName(String text) async {
+    return _queryAdapter.queryList('SELECT * FROM Plant WHERE name LIKE ?1',
+        mapper: (Map<String, Object?> row) => Plant(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            type: _plantTypeConverter.decode(row['type'] as String),
+            plantDate: _dateTimeConverter.decode(row['plantDate'] as int)),
+        arguments: [text]);
+  }
+
+  @override
   Future<void> insertPlant(Plant plant) async {
     await _plantInsertionAdapter.insert(plant, OnConflictStrategy.replace);
   }

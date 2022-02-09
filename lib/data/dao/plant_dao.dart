@@ -9,6 +9,9 @@ abstract class PlantDao {
   @Query('SELECT * FROM Plant ORDER BY id DESC LIMIT :quantity')
   Future<List<Plant>> getFirstPlants(int quantity);
 
+  @Query('SELECT * FROM Plant WHERE name LIKE :text')
+  Future<List<Plant>> getPlantsByName(String text);
+
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertPlant(Plant plant);
 

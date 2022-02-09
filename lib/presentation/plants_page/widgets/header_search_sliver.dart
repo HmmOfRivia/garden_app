@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:garden_app/config/config.dart';
 import 'package:garden_app/gen/assets.gen.dart';
+import 'package:garden_app/logic/plants_page/plants_page_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garden_app/generated/l10n.dart';
 
 class HeaderSearchSliver extends SliverAppBar {
   final String titleText;
@@ -11,11 +15,12 @@ class HeaderSearchSliver extends SliverAppBar {
   HeaderSearchSliver({
     Key? key,
     required this.titleText,
+    bool useSearch = false,
   }) : super(
           key: key,
           floating: true,
           pinned: true,
-          expandedHeight: maxHeight,
+          expandedHeight: useSearch ? minHeight : maxHeight,
           backgroundColor: AppColors.mainColor,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(minHeight),
@@ -23,11 +28,8 @@ class HeaderSearchSliver extends SliverAppBar {
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),
               height: 60,
-              child: Center(
-                child: Container(
-                  color: Colors.white,
-                  child: const TextField(),
-                ),
+              child: const Center(
+                child: _SearchPlantsTextField(),
               ),
             ),
           ),
@@ -46,4 +48,33 @@ class HeaderSearchSliver extends SliverAppBar {
             collapseMode: CollapseMode.parallax,
           ),
         );
+}
+
+class _SearchPlantsTextField extends HookWidget {
+  const _SearchPlantsTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = useTextEditingController();
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: S.of(context).search,
+        contentPadding: const EdgeInsets.all(8.0),
+        fillColor: Colors.white,
+        filled: true,
+        border: const OutlineInputBorder()
+            .copyWith(borderRadius: BorderRadius.circular(10.0)),
+        suffixIcon: IconButton(
+          onPressed: () {
+            controller.clear();
+            context.read<PlantsPageCubit>().loadPlantsFromDatabase();
+          },
+          icon: const Icon(Icons.clear),
+        ),
+      ),
+      onChanged: (value) =>
+          context.read<PlantsPageCubit>().searchPlant(text: value),
+    );
+  }
 }

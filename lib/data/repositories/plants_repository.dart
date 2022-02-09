@@ -8,10 +8,10 @@ class PlantsRepository {
   final PlantDatabase _database;
   PlantsRepository(this._database);
 
-  Future<Either<Exception, List<Plant>>> getPlants(
+  Future<Either<Exception, List<Plant>>> getPlants({
     int? after,
-    int quantity,
-  ) async {
+    int quantity = 10,
+  }) async {
     try {
       late List<Plant> plants;
       if (after == null) {
@@ -38,6 +38,15 @@ class PlantsRepository {
       await _database.plantDao.updatePlant(plant);
     } catch (_) {
       throw Exception();
+    }
+  }
+
+  Future<Either<Exception, List<Plant>>> getPlantsByText(String text) async {
+    try {
+      final plants = await _database.plantDao.getPlantsByName('%$text%');
+      return right(plants);
+    } catch (_) {
+      return left(Exception());
     }
   }
 }

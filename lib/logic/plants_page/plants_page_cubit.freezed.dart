@@ -25,11 +25,13 @@ class _$PlantsPageStateTearOff {
   _PlantsPageStateLoaded loaded(
       {List<Plant> plants = const <Plant>[],
       bool reachedLastItem = false,
-      PlantsListAction? action}) {
+      _PlantActionArguments? action,
+      String searchPhrase = ''}) {
     return _PlantsPageStateLoaded(
       plants: plants,
       reachedLastItem: reachedLastItem,
       action: action,
+      searchPhrase: searchPhrase,
     );
   }
 
@@ -46,8 +48,8 @@ mixin _$PlantsPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+    required TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)
         loaded,
     required TResult Function() error,
   }) =>
@@ -55,8 +57,8 @@ mixin _$PlantsPageState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
   }) =>
@@ -64,8 +66,8 @@ mixin _$PlantsPageState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
@@ -154,8 +156,8 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+    required TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)
         loaded,
     required TResult Function() error,
   }) {
@@ -166,8 +168,8 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
   }) {
@@ -178,8 +180,8 @@ class _$_PlantsPageStateInitial implements _PlantsPageStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
@@ -235,7 +237,10 @@ abstract class _$PlantsPageStateLoadedCopyWith<$Res> {
           $Res Function(_PlantsPageStateLoaded) then) =
       __$PlantsPageStateLoadedCopyWithImpl<$Res>;
   $Res call(
-      {List<Plant> plants, bool reachedLastItem, PlantsListAction? action});
+      {List<Plant> plants,
+      bool reachedLastItem,
+      _PlantActionArguments? action,
+      String searchPhrase});
 }
 
 /// @nodoc
@@ -254,6 +259,7 @@ class __$PlantsPageStateLoadedCopyWithImpl<$Res>
     Object? plants = freezed,
     Object? reachedLastItem = freezed,
     Object? action = freezed,
+    Object? searchPhrase = freezed,
   }) {
     return _then(_PlantsPageStateLoaded(
       plants: plants == freezed
@@ -267,7 +273,11 @@ class __$PlantsPageStateLoadedCopyWithImpl<$Res>
       action: action == freezed
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
-              as PlantsListAction?,
+              as _PlantActionArguments?,
+      searchPhrase: searchPhrase == freezed
+          ? _value.searchPhrase
+          : searchPhrase // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -278,7 +288,8 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   _$_PlantsPageStateLoaded(
       {this.plants = const <Plant>[],
       this.reachedLastItem = false,
-      this.action});
+      this.action,
+      this.searchPhrase = ''});
 
   @JsonKey()
   @override
@@ -287,11 +298,14 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   @override
   final bool reachedLastItem;
   @override
-  final PlantsListAction? action;
+  final _PlantActionArguments? action;
+  @JsonKey()
+  @override
+  final String searchPhrase;
 
   @override
   String toString() {
-    return 'PlantsPageState.loaded(plants: $plants, reachedLastItem: $reachedLastItem, action: $action)';
+    return 'PlantsPageState.loaded(plants: $plants, reachedLastItem: $reachedLastItem, action: $action, searchPhrase: $searchPhrase)';
   }
 
   @override
@@ -302,7 +316,9 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
             const DeepCollectionEquality().equals(other.plants, plants) &&
             const DeepCollectionEquality()
                 .equals(other.reachedLastItem, reachedLastItem) &&
-            const DeepCollectionEquality().equals(other.action, action));
+            const DeepCollectionEquality().equals(other.action, action) &&
+            const DeepCollectionEquality()
+                .equals(other.searchPhrase, searchPhrase));
   }
 
   @override
@@ -310,7 +326,8 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
       runtimeType,
       const DeepCollectionEquality().hash(plants),
       const DeepCollectionEquality().hash(reachedLastItem),
-      const DeepCollectionEquality().hash(action));
+      const DeepCollectionEquality().hash(action),
+      const DeepCollectionEquality().hash(searchPhrase));
 
   @JsonKey(ignore: true)
   @override
@@ -322,38 +339,38 @@ class _$_PlantsPageStateLoaded implements _PlantsPageStateLoaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+    required TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)
         loaded,
     required TResult Function() error,
   }) {
-    return loaded(plants, reachedLastItem, action);
+    return loaded(plants, reachedLastItem, action, searchPhrase);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
   }) {
-    return loaded?.call(plants, reachedLastItem, action);
+    return loaded?.call(plants, reachedLastItem, action, searchPhrase);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(plants, reachedLastItem, action);
+      return loaded(plants, reachedLastItem, action, searchPhrase);
     }
     return orElse();
   }
@@ -397,11 +414,13 @@ abstract class _PlantsPageStateLoaded implements PlantsPageState {
   factory _PlantsPageStateLoaded(
       {List<Plant> plants,
       bool reachedLastItem,
-      PlantsListAction? action}) = _$_PlantsPageStateLoaded;
+      _PlantActionArguments? action,
+      String searchPhrase}) = _$_PlantsPageStateLoaded;
 
   List<Plant> get plants;
   bool get reachedLastItem;
-  PlantsListAction? get action;
+  _PlantActionArguments? get action;
+  String get searchPhrase;
   @JsonKey(ignore: true)
   _$PlantsPageStateLoadedCopyWith<_PlantsPageStateLoaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -449,8 +468,8 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)
+    required TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)
         loaded,
     required TResult Function() error,
   }) {
@@ -461,8 +480,8 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
   }) {
@@ -473,8 +492,8 @@ class _$_PlantsPageStateError implements _PlantsPageStateError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(
-            List<Plant> plants, bool reachedLastItem, PlantsListAction? action)?
+    TResult Function(List<Plant> plants, bool reachedLastItem,
+            _PlantActionArguments? action, String searchPhrase)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),

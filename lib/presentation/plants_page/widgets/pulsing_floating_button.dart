@@ -19,7 +19,7 @@ class PulsingFloatingButton extends HookWidget {
     if (pulseEnabled) {
       controller = useAnimationController(
         duration: const Duration(seconds: 1),
-        upperBound: 10,
+        upperBound: 30,
       )..repeat(reverse: true);
     }
 

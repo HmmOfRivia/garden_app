@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:garden_app/config/config.dart';
 import 'package:garden_app/config/injection.dart';
 import 'package:garden_app/config/routes.gr.dart';
@@ -11,6 +10,7 @@ import 'package:garden_app/presentation/plants_page/widgets/sliver_empty_plants_
 import 'package:garden_app/presentation/plants_page/widgets/header_search_sliver.dart';
 import 'package:garden_app/presentation/plants_page/widgets/plant_list_tile.dart';
 import 'package:garden_app/presentation/plants_page/widgets/pulsing_floating_button.dart';
+import 'package:garden_app/presentation/plants_page/widgets/sliver_empty_search_placeholder.dart';
 import 'package:keyboard_utils/widgets.dart';
 
 class PlantsPage extends StatelessWidget {
@@ -25,87 +25,93 @@ class PlantsPage extends StatelessWidget {
   }
 }
 
-class _PlantsPage extends HookWidget {
+class _PlantsPage extends StatelessWidget {
   const _PlantsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = useScrollController();
     return Scaffold(
-      body: CustomScrollView(
-        controller: controller,
-        slivers: [
-          KeyboardAware(
-            builder: (context, options) {
-              if (options.isKeyboardOpen &&
-                  controller.offset < HeaderSearchSliver.heightDifference) {
-                controller.animateTo(
-                  HeaderSearchSliver.heightDifference,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                );
-              }
-
-              return HeaderSearchSliver(
+      body: KeyboardAware(
+        builder: (context, options) {
+          return CustomScrollView(
+            slivers: [
+              HeaderSearchSliver(
+                useSearch: options.isKeyboardOpen,
                 titleText: S.of(context).appName,
-              );
-            },
-          ),
-          BlocConsumer<PlantsPageCubit, PlantsPageState>(
-            listener: (context, state) {
-              state.maybeWhen(
-                loaded: (_, __, action) {
-                  if (action == PlantsListAction.inserted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(S.of(context).insertedSuccessfully),
-                        backgroundColor: AppColors.successColor,
-                      ),
-                    );
-                  }
-                  if (action == PlantsListAction.updated) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(S.of(context).updatedSuccessfully),
-                        backgroundColor: AppColors.successColor,
-                      ),
-                    );
-                  }
-                },
-                orElse: () => null,
-              );
-            },
-            builder: (context, state) {
-              return state.maybeMap(
-                loaded: (s) {
-                  if (s.plants.isEmpty) {
-                    return const SliverEmptyPlantsListPlaceholder();
-                  }
-
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        context
-                            .read<PlantsPageCubit>()
-                            .loadMorePlantsOnEdge(index);
-
-                        return PlantListTile(plant: s.plants[index]);
-                      },
-                      childCount: s.plants.length,
-                    ),
+              ),
+              BlocConsumer<PlantsPageCubit, PlantsPageState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    loaded: (_, __, action, ___) {
+                      if (action == null) return;
+                      if (action.action == PlantsListAction.inserted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              S.of(context).insertedSuccessfully(action.name),
+                            ),
+                            backgroundColor: AppColors.successColor,
+                          ),
+                        );
+                      }
+                      if (action.action == PlantsListAction.updated) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              S.of(context).updatedSuccessfully(action.name),
+                            ),
+                            backgroundColor: AppColors.successColor,
+                          ),
+                        );
+                      }
+                    },
+                    orElse: () => null,
                   );
                 },
-                orElse: () => const SizedBox(),
-              );
-            },
-          ),
-        ],
+                builder: (context, state) {
+                  return state.maybeMap(
+                    loaded: (s) {
+                      if (s.plants.isEmpty) {
+                        if (s.searchPhrase.isNotEmpty) {
+                          return SliverEmptySearchPlaceholder(
+                            keyboardHeight: options.keyboardHeight,
+                          );
+                        }
+                        return SliverEmptyPlantsListPlaceholder(
+                          keyboardHeight: options.keyboardHeight,
+                        );
+                      }
+
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            context
+                                .read<PlantsPageCubit>()
+                                .loadMorePlantsOnEdge(index);
+
+                            return PlantListTile(plant: s.plants[index]);
+                          },
+                          childCount: s.plants.length,
+                        ),
+                      );
+                    },
+                    // Handle error state there
+                    orElse: () => const SliverToBoxAdapter(child: SizedBox()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
       floatingActionButton: PulsingFloatingButton(
         pulseEnabled: true,
-        onTap: () => AutoRouter.of(context).push(
-          PlantsFormRoute(),
-        ),
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          AutoRouter.of(context).push(
+            PlantsFormRoute(),
+          );
+        },
       ),
     );
   }

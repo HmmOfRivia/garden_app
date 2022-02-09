@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
+
 import 'package:garden_app/data/entity/plant.dart';
 import 'package:garden_app/data/repositories/plants_repository.dart';
-import 'package:injectable/injectable.dart';
 
 part 'plants_page_cubit.freezed.dart';
 
@@ -16,7 +17,10 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
 
   Future<void> loadPlantsFromDatabase({int? after}) async {
     const _quantity = 10;
-    final plantsEither = await _repository.getPlants(after, _quantity);
+    final plantsEither = await _repository.getPlants(
+      after: after,
+      quantity: _quantity,
+    );
 
     plantsEither.fold(
       (_) => emit(PlantsPageState.error()),
@@ -31,7 +35,8 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
           ),
           loaded: (s) => emit(
             s.copyWith(
-              plants: [...s.plants, ...plants],
+              plants: after == null ? plants : [...s.plants, ...plants],
+              searchPhrase: '',
               reachedLastItem: reachedEnd,
               action: null,
             ),
@@ -45,7 +50,9 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
   void loadMorePlantsOnEdge(int index) {
     state.maybeMap(
       loaded: (s) {
-        if (index == s.plants.length - 2 && !s.reachedLastItem) {
+        if (index == s.plants.length - 2 &&
+            !s.reachedLastItem &&
+            s.searchPhrase.isEmpty) {
           loadPlantsFromDatabase(after: s.plants.last.id!);
         }
       },
@@ -60,7 +67,10 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
       loaded: (s) => emit(
         s.copyWith(
           plants: [plant, ...s.plants],
-          action: PlantsListAction.inserted,
+          action: _PlantActionArguments(
+            action: PlantsListAction.inserted,
+            name: plant.name,
+          ),
         ),
       ),
       orElse: () => null,
@@ -79,7 +89,10 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
         emit(
           s.copyWith(
             plants: updatedPlants,
-            action: PlantsListAction.updated,
+            action: _PlantActionArguments(
+              action: PlantsListAction.updated,
+              name: plant.name,
+            ),
           ),
         );
       },
@@ -87,10 +100,41 @@ class PlantsPageCubit extends Cubit<PlantsPageState> {
     );
   }
 
-  Future<void> removePlant(Plant plant) async {}
+  Future<void> searchPlant({String? text}) async {
+    if (text != null && text.isNotEmpty) {
+      final plantsEither = await _repository.getPlantsByText(text);
+
+      plantsEither.fold(
+        (_) => null,
+        (plants) => emit(
+          PlantsPageState.loaded(
+            plants: plants,
+            searchPhrase: text,
+          ),
+        ),
+      );
+    } else {
+      final plantsEither = await _repository.getPlants();
+
+      plantsEither.fold(
+        (_) => null,
+        (plants) => emit(PlantsPageState.loaded(plants: plants)),
+      );
+    }
+  }
 }
 
 enum PlantsListAction { updated, inserted }
+
+class _PlantActionArguments {
+  final PlantsListAction action;
+  final String name;
+
+  _PlantActionArguments({
+    required this.action,
+    required this.name,
+  });
+}
 
 @freezed
 class PlantsPageState with _$PlantsPageState {
@@ -98,7 +142,8 @@ class PlantsPageState with _$PlantsPageState {
   factory PlantsPageState.loaded({
     @Default(<Plant>[]) List<Plant> plants,
     @Default(false) bool reachedLastItem,
-    PlantsListAction? action,
+    _PlantActionArguments? action,
+    @Default('') String searchPhrase,
   }) = _PlantsPageStateLoaded;
   factory PlantsPageState.error() = _PlantsPageStateError;
 }
